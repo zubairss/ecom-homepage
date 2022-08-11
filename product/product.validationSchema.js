@@ -5,8 +5,8 @@ const { rolesArr, bannerTypesArr, productCategoriesArr, userType } = require('..
 const productValidationSchema = {
     body: Joi.object().keys({
 
-        title: Joi.string().required(),
-        description: Joi.string(),
+        title: Joi.string().min(10).max(200).required(),
+        description: Joi.string().min(20).max(500),
         price: Joi.number().required(),
         isActive: Joi.bool().default(true),
         category: Joi.valid(...productCategoriesArr).required(),

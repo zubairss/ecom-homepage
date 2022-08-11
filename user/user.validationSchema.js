@@ -5,8 +5,8 @@ const { rolesArr, bannerTypesArr, productCategoriesArr, userType } = require('..
 const userValidationSchema = {
     body: Joi.object().keys({
         email: Joi.string().email().required(),
-        password: Joi.string().required(),
-        name: Joi.string().required(),
+        password: Joi.string().min(5).max(30).required(),
+        name: Joi.string().min(3).max(15).required(),
         type: Joi.valid(...userType),
         gender: Joi.valid('male', 'female'),
         role: Joi.valid(...rolesArr)
@@ -16,8 +16,8 @@ const userValidationSchema = {
 const userUpdateValidationSchema = {
     body: Joi.object().keys({
         email: Joi.string().email(),
-        password: Joi.string(),
-        name: Joi.string(),
+        password: Joi.string().min(5).max(30),
+        name: Joi.string().min(3).max(15),
         type: Joi.valid(...userType),
         gender: Joi.valid('male', 'female'),
         role: Joi.valid(...rolesArr)
@@ -27,7 +27,7 @@ const userUpdateValidationSchema = {
 const userLoginValidationScheme = {
     body: Joi.object().keys({
         email: Joi.string().email().required(),
-        password: Joi.string().required()
+        password: Joi.string().min(5).max(30).required()
     }).min(1)
 }
 
