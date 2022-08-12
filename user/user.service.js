@@ -12,6 +12,31 @@ const redisClient = redis.createClient({
 
 
 const createUser = async (userDetails, role = 'user') => {
+
+    var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/
+    if (!(emailPattern.test(userDetails.email))) {
+        return {
+            "Error": "Validation Error",
+            "Message": "\"email\" must be a valid email",
+        }
+    }
+
+    var noSpacePattern = /^(?=.*\S).+$/
+    if (!(noSpacePattern.test(userDetails.password))) {
+        return {
+            "Error": "Validation Error",
+            "Message": "password cannot be only spaces",
+        }
+    }
+
+    if (!(noSpacePattern.test(userDetails.name))) {
+        return {
+            "Error": "Validation Error",
+            "Message": "name cannot be only spaces",
+        }
+    }
+
+
     const user = new User({ ...userDetails, role: role });
     try {
         await user.save();
@@ -33,6 +58,18 @@ const createUser = async (userDetails, role = 'user') => {
 };
 
 const updateUser = async (userId, userDetails) => {
+
+    if (userDetails.email != undefined) {
+        var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/
+        if (!(emailPattern.test(userDetails.email))) {
+            return {
+                "Error": "Validation Error",
+                "Message": "\"email\" must be a valid email",
+            }
+        }
+
+    }
+
     return await User.findByIdAndUpdate(userId, userDetails, { new: true }).then((res) => {
         if (res) return res;
         return "User Doesn't Exists";

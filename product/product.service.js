@@ -20,9 +20,18 @@ var s3 = new S3Client({
 
 const createProduct = async (productDetails, images) => {
 
+    var noSpacePattern = /^(?=.*\S).+$/
+    if (!(noSpacePattern.test(productDetails.title))) {
+        return {
+            "Error": "Validation Error",
+            "Message": "title cannot be only spaces",
+        }
+    }
+
     if (images.length == 0) {
         return { message: "No File Uploaded - Please Send Product Image(s) as well" };
     }
+
 
 
     imagesData = images.map((data) => {
