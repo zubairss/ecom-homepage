@@ -58,11 +58,13 @@ const validate = (schema) => (req, res, next) => {
         }
 
 
-        res.send({
-            Error: "Validation Error",
-            Message: error.details[0].message
-            // Message: value
+        res.json({
+            result: {
+                Error: "Validation Error",
+                Message: error.details[0].message
+            }
         })
+
         return
         // return next("Error")
     }
